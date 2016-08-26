@@ -93,6 +93,14 @@ class HtmlNode implements Node {
     }
     
     public static function get_builder($tag) {
+        if ($tag == null) {
+            throw new \RuntimeException("get_builder called with null");
+        }
+        
+        if (!is_string($tag)) {
+            throw new \RuntimeException("tag at get_builder must be a string");
+        }
+        
         return new HtmlBuilder($tag);
     }
 }
