@@ -28,8 +28,7 @@ class HtmlNode implements Node {
         if ($attribute == null) {
             return;
         }
-        
-        //array_push($this->attributes, $attribute);
+
         $this->attributes[$attribute->name] = $attribute;
     }
     
