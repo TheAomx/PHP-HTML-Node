@@ -64,11 +64,6 @@ class HtmlBuilder {
         return $this;
     }
     
-    public function no_ending_tag () {
-        $this->node->hasNoEndingTag();
-        return $this;
-    }
-    
     /**
      * 
      * @return HtmlNode

@@ -49,7 +49,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $script = new \Nodes\HtmlNode("script");
         $script->addAttribute(new \Nodes\NodeAttribute("type", "text/javascript"));
         $script->addAttribute(new \Nodes\NodeAttribute("src", "blubber.js"));
-        $expected = '<script type="text/javascript" src="blubber.js"></script>';
+        $expected = '<script type="text/javascript" src="blubber.js" />';
         $this->assertEquals($expected, $script->getHtml());
     }
     

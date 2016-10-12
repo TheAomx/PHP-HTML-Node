@@ -11,7 +11,6 @@ class HtmlNode implements Node {
     private $tag;
     private $attributes = array();
     private $childNodes = array();
-    private $hasEndingTag = true;
     
     public function __construct($tag = "") {
         $this->tag = $tag;
@@ -49,6 +48,10 @@ class HtmlNode implements Node {
         return $this->attributes[$attribute];
     }
     
+    private function hasChildren() {
+        return count($this->childNodes) != 0;
+    }
+    
     private function getOpeningTag() {
         $html = "";
         $html .= "<" . $this->tag;
@@ -57,7 +60,7 @@ class HtmlNode implements Node {
             $html .= $attribute->getHtml();
         }
         
-        $html .= ($this->hasEndingTag) ? ">" : " />";
+        $html .= $this->hasChildren() ? ">" : " />";
         return $html;
     }
     
@@ -70,22 +73,17 @@ class HtmlNode implements Node {
         $html .= $this->getOpeningTag();
         $html .= Indentation::getLineBreaker();
         
-        if (!$this->hasEndingTag) {
-            return $html;
+        if ($this->hasChildren()) {
+            foreach ($this->childNodes as $childNode) {
+                $html .= $childNode->format($identation + Indentation::getIndentationDepth());
+            }
+
+            $html .= Indentation::getIndentation($identation);
+            $html .= "</$this->tag>";
+            $html .= Indentation::getLineBreaker();
         }
-        
-        foreach ($this->childNodes as $childNode) {
-            $html .= $childNode->format($identation + Indentation::getIndentationDepth());
-        }
-        
-        $html .= Indentation::getIndentation($identation);
-        $html .= "</$this->tag>";
-        $html .=  Indentation::getLineBreaker();
+
         return $html;
-    }
-    
-    public function hasNoEndingTag () {
-        $this->hasEndingTag = false;
     }
     
     public function __toString() {

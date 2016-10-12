@@ -32,19 +32,19 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
     }
     
     public function test_node_without_endtag () {
-        $builder = \Nodes\HtmlNode::get_builder("br")->no_ending_tag();
+        $builder = \Nodes\HtmlNode::get_builder("br");
         $br = $builder->build();
         $expected = '<br />';
         $this->assertEquals($expected, $br->getHtml());
     }
     
-    public function integration_test_with_full_site() {
+    public function test_integration_test_with_full_site() {
         $html = HtmlNode::get_builder("html")->attribute("lang", "de")->build();
 
         $head = HtmlNode::get_builder("head")->build();
-        $charset = HtmlNode::get_builder("meta")->attribute("charset", "utf-8")->no_ending_tag()->build();
+        $charset = HtmlNode::get_builder("meta")->attribute("charset", "utf-8")->build();
         $viewport = HtmlNode::get_builder("meta")->attribute("name", "viewport")->
-                        attribute("content", "width=device-width, initial-scale=1.0")->no_ending_tag()->build();
+                        attribute("content", "width=device-width, initial-scale=1.0")->build();
         $title = HtmlNode::get_builder("title")->text("Hello World Site")->build();
         $head->addChildNode($charset);
         $head->addChildNode($viewport);
