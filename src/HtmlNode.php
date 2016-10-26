@@ -24,6 +24,16 @@ class HtmlNode implements Node {
         array_push($this->childNodes, $node);
     }
     
+    public function attribute ($name, $value) {
+        $this->attributes[$name] = new NodeAttribute($name, $value);
+        return $this;
+    }
+    
+    public function child (Node $node) {
+        $this->addChildNode($node);
+        return $this;
+    }
+    
     public function addAttribute (NodeAttribute $attribute) {
         if ($attribute == null) {
             return;
