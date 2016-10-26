@@ -7,7 +7,7 @@ require_once 'root.php';
 require_once get_src_folder() . 'HtmlBuilder.php';
 
 class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
-     protected function setUp() {
+    protected function setUp() {
         Indentation::$indentationCharacter = "";
         Indentation::$indentationDepth = 0;
         Indentation::$lineBreaker = "";
