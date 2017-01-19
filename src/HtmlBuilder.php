@@ -24,7 +24,7 @@ class HtmlBuilder {
     }
     
     private function sanitizeString ($string) {
-        return htmlentities($string, ENT_QUOTES|'ENT_XHTML' , 'UTF-8', true);
+        return htmlentities($string, ENT_QUOTES|ENT_XHTML, 'UTF-8', true);
     }
     
     public function attribute($name, $value) {
