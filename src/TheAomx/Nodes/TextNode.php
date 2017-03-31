@@ -1,6 +1,6 @@
 <?php
 
-namespace Nodes;
+namespace TheAomx\Nodes;
 
 require_once 'Indentation.php';
 

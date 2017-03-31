@@ -1,6 +1,6 @@
 <?php
 
-namespace Nodes;
+namespace TheAomx\Nodes;
 
 class NodeAttribute {
     public $name, $value;

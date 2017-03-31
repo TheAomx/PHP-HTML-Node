@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Nodes;
+namespace TheAomx\Nodes;
 
 
 class Indentation {

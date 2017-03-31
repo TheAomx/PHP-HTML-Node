@@ -1,6 +1,6 @@
 <?php
 
-namespace Nodes;
+namespace TheAomx\Nodes;
 
 require_once 'HtmlNode.php';
 require_once 'NodeAttribute.php';

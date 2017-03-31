@@ -1,0 +1,25 @@
+{
+    "name": "theaomx/htmlnode",
+    "description": "Create custom HTML-Markup by constructing AST-Node-Trees with an easy-to-use HtmlBuilder that implements the builder pattern.",
+    "keywords": ["http", "node", "markup", "tree","ast"],
+    "homepage": "https://github.com/TheAomx/PHP-HTML-Node",
+    "license": "MIT",
+    "authors": [
+	{
+	    "name": "TheAomx",
+	    "homepage": "https://github.com/TheAomx",
+	    "role": "Developer"
+	}
+    ],
+    "require": {
+	"php": ">=5.4.0"
+    },
+    "require-dev": {
+	"phpunit/phpunit": "~4.3"
+    },
+    "autoload": {
+	"psr-4": {
+	    "TheAomx\\": "src/TheAomx"
+	}
+    }
+}

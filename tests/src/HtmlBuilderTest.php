@@ -6,6 +6,9 @@ require_once 'root.php';
 
 require_once get_src_folder() . 'HtmlBuilder.php';
 
+use \TheAomx\Nodes\HtmlNode as HtmlNode;
+use \TheAomx\Nodes\Indentation as Indentation;
+
 class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
     protected function setUp() {
         Indentation::$indentationCharacter = "";
@@ -14,7 +17,7 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function test_simple_builder() {
-       $builder = \Nodes\HtmlNode::get_builder("p")->attribute("style", "color: red;")->
+       $builder = HtmlNode::get_builder("p")->attribute("style", "color: red;")->
                    attribute("align", "left")->text("Hello World");
        $node = $builder->build();
        $expected = '<p style="color: red;" align="left">Hello World</p>';
@@ -22,9 +25,9 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function test_nested_builder () {
-       $builder = \Nodes\HtmlNode::get_builder("p")->attribute("style", "color: red;")->
+       $builder = HtmlNode::get_builder("p")->attribute("style", "color: red;")->
                      attribute("align", "left");
-       $b = \Nodes\HtmlNode::get_builder("b")->text("Hello World")->build();
+       $b = HtmlNode::get_builder("b")->text("Hello World")->build();
        $builder->add_node($b);
        $p = $builder->build();
        $expected = '<p style="color: red;" align="left"><b>Hello World</b></p>';
@@ -32,7 +35,7 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
     }
     
     public function test_node_without_endtag () {
-        $builder = \Nodes\HtmlNode::get_builder("br");
+        $builder = HtmlNode::get_builder("br");
         $br = $builder->build();
         $expected = '<br />';
         $this->assertEquals($expected, $br->getHtml());
@@ -87,7 +90,7 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
     public function test_null_builder() {
         // this doesnt make mich sense... expect exception...
-        \Nodes\HtmlNode::get_builder(null);
+        HtmlNode::get_builder(null);
     }
 
     /**
@@ -96,7 +99,7 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
     public function test_number_builder() {
         // this doesnt make mich sense... expect exception...
-        \Nodes\HtmlNode::get_builder(1);
+        HtmlNode::get_builder(1);
     }
     
 

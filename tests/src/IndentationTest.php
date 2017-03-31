@@ -6,6 +6,11 @@ require_once 'root.php';
 require_once get_src_folder() . 'HtmlNode.php';
 require_once get_src_folder() . 'TextNode.php';
 
+use \TheAomx\Nodes\HtmlNode as HtmlNode;
+use \TheAomx\Nodes\TextNode as TextNode;
+use \TheAomx\Nodes\NodeAttribute as NodeAttribute;
+use \TheAomx\Nodes\Indentation as Indentation;
+
 class IndentationTest  extends \PHPUnit_Framework_TestCase {
     protected function setUp() {
         Indentation::$indentationCharacter = " ";
@@ -14,8 +19,8 @@ class IndentationTest  extends \PHPUnit_Framework_TestCase {
     }
     
     public function test_one_indentation_depth () {
-        $node = new \Nodes\HtmlNode("p");
-        $text = new \Nodes\TextNode("Hello World");
+        $node = new HtmlNode("p");
+        $text = new TextNode("Hello World");
         $node->addChildNode($text);
         $expected = "<p>\n"
                 . " Hello World\n"
@@ -24,9 +29,9 @@ class IndentationTest  extends \PHPUnit_Framework_TestCase {
     }
     
     public function test_two_indentation_depth () {
-        $p = new \Nodes\HtmlNode("p");
-        $span = new \Nodes\HtmlNode("span");
-        $text = new \Nodes\TextNode("Hello World");
+        $p = new HtmlNode("p");
+        $span = new HtmlNode("span");
+        $text = new TextNode("Hello World");
         $p->addChildNode($span);
         $span->addChildNode($text);
         $expected = "<p>\n"
@@ -38,10 +43,10 @@ class IndentationTest  extends \PHPUnit_Framework_TestCase {
     }
     
     public function test_two_indentation_depth_with_inline_element () {
-        $head = new \Nodes\HtmlNode("head");
-        $script = new \Nodes\HtmlNode("script");
-        $script->addAttribute(new \Nodes\NodeAttribute("type", "text/javascript"));
-        $script->addAttribute(new \Nodes\NodeAttribute("src", "test.js"));
+        $head = new HtmlNode("head");
+        $script = new HtmlNode("script");
+        $script->addAttribute(new NodeAttribute("type", "text/javascript"));
+        $script->addAttribute(new NodeAttribute("src", "test.js"));
         $head->addChildNode($script);
         $expected = "<head>\n"
                 . " <script type=\"text/javascript\" src=\"test.js\" />\n"
