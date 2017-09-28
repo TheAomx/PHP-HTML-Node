@@ -29,6 +29,10 @@ class HtmlNode implements Node {
         return $this;
     }
     
+    public function attr($name, $value) {
+        return $this->attribute($name, $value);
+    }
+    
     public function child (Node $node) {
         $this->addChildNode($node);
         return $this;

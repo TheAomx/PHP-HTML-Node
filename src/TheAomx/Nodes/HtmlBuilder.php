@@ -33,10 +33,18 @@ class HtmlBuilder {
         return $this;
     }
     
+    public function attr($name, $value) {
+        return $this->attribute($name, $value);
+    }
+    
     public function s_attribute($name, $value) {
         $attribute = new NodeAttribute($name, $this->sanitizeString($value));
         $this->node->addAttribute($attribute);
         return $this;
+    }
+    
+    public function s_attr($name, $value) {
+        return $this->s_attribute($name, $value);
     }
     
     /**

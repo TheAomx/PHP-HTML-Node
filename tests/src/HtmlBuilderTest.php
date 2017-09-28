@@ -42,12 +42,12 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
     }
     
     public function test_integration_test_with_full_site() {
-        $html = HtmlNode::get_builder("html")->attribute("lang", "de")->build();
+        $html = HtmlNode::get_builder("html")->attr("lang", "de")->build();
 
         $head = HtmlNode::get_builder("head")->build();
-        $charset = HtmlNode::get_builder("meta")->attribute("charset", "utf-8")->build();
-        $viewport = HtmlNode::get_builder("meta")->attribute("name", "viewport")->
-                        attribute("content", "width=device-width, initial-scale=1.0")->build();
+        $charset = HtmlNode::get_builder("meta")->attr("charset", "utf-8")->build();
+        $viewport = HtmlNode::get_builder("meta")->attr("name", "viewport")->
+                        attr("content", "width=device-width, initial-scale=1.0")->build();
         $title = HtmlNode::get_builder("title")->text("Hello World Site")->build();
         $head->addChildNode($charset);
         $head->addChildNode($viewport);
@@ -60,7 +60,7 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
         $h1 = HtmlNode::get_builder("h1")->text("Welcome stranger!")->build();
 
-        $p = HtmlNode::get_builder("p")->attribute("style", "color: red;")->
+        $p = HtmlNode::get_builder("p")->attr("style", "color: red;")->
                         attribute("align", "left")->build();
         $b = HtmlNode::get_builder("b")->s_text("Hello World with umlaute äöü&%")->build();
         $p->addChildNode($b);
