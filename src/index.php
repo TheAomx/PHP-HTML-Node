@@ -11,31 +11,25 @@ Indentation::$indentationCharacter = " ";
 Indentation::$indentationDepth = 2;
 Indentation::$lineBreaker = "\n";
 
-$html = HtmlNode::get_builder("html")->attribute("lang", "de")->build();
+$html = HtmlNode::get_builder("html")->attr("lang", "de")->build();
 
 $head = HtmlNode::get_builder("head")->build();
-$charset = HtmlNode::get_builder("meta")->attribute("charset", "utf-8")->build();
-$viewport = HtmlNode::get_builder("meta")->attribute("name", "viewport")->
-            attribute("content", "width=device-width, initial-scale=1.0")->build();
+$charset = HtmlNode::get_builder("meta")->attr("charset", "utf-8")->build();
+$viewport = HtmlNode::get_builder("meta")->attr("name", "viewport")->
+                attr("content", "width=device-width, initial-scale=1.0")->build();
 $title = HtmlNode::get_builder("title")->text("Hello World Site")->build();
-$head->addChildNode($charset);
-$head->addChildNode($viewport);
-$head->addChildNode($title);
+$head->addChildNode($charset)->addChildNode($viewport)->addChildNode($title);
 
 $body = HtmlNode::get_builder("body")->build();
-
-$html->addChildNode($head);
-$html->addChildNode($body);
+$html->append($head)->append($body);
 
 $h1 = HtmlNode::get_builder("h1")->text("Welcome stranger!")->build();
-
-$p = HtmlNode::get_builder("p")->attribute("style", "color: red;")->
-            attribute("align", "left")->build();
+$p = HtmlNode::get_builder("p")->attr("style", "color: red;")->
+                attribute("align", "left")->build();
 $b = HtmlNode::get_builder("b")->s_text("Hello World with umlaute äöü&%")->build();
-$p->addChildNode($b);
+$p->append($b);
 
-$body->addChildNode($h1);
-$body->addChildNode($p);
+$body->append($h1)->append($p);
 ?>
 <!doctype html>
 <?php

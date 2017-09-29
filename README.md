@@ -9,32 +9,52 @@ you can see the relevant api-calls there.
 use \TheAomx\Nodes\HtmlNode as HtmlNode;
 use \TheAomx\Nodes\Indentation as Indentation;
 
-$html = HtmlNode::get_builder("html")->attribute("lang", "de")->build();
+$html = HtmlNode::get_builder("html")->attr("lang", "de")->build();
 
 $head = HtmlNode::get_builder("head")->build();
-$charset = HtmlNode::get_builder("meta")->attribute("charset", "utf-8")->build();
-$viewport = HtmlNode::get_builder("meta")->attribute("name", "viewport")->
-            attribute("content", "width=device-width, initial-scale=1.0")->build();
-$title = HtmlNode::get_builder("title")->text("barebone Site")->build();
-$head->addChildNode($charset);
-$head->addChildNode($viewport);
-$head->addChildNode($title);
+$charset = HtmlNode::get_builder("meta")->attr("charset", "utf-8")->build();
+$viewport = HtmlNode::get_builder("meta")->attr("name", "viewport")->
+                attr("content", "width=device-width, initial-scale=1.0")->build();
+$title = HtmlNode::get_builder("title")->text("Hello World Site")->build();
+$head->addChildNode($charset)->addChildNode($viewport)->addChildNode($title);
 
 $body = HtmlNode::get_builder("body")->build();
+$html->append($head)->append($body);
 
-$html->addChildNode($head);
-$html->addChildNode($body);
-
-$h1 = HtmlNode::get_builder("h1")->text("Welcome you stranger!")->build();
-
-$p = HtmlNode::get_builder("p")->attribute("style", "color: red;")->
-            attribute("align", "left")->build();
+$h1 = HtmlNode::get_builder("h1")->text("Welcome stranger!")->build();
+$p = HtmlNode::get_builder("p")->attr("style", "color: red;")->
+                attribute("align", "left")->build();
 $b = HtmlNode::get_builder("b")->s_text("Hello World with umlaute äöü&%")->build();
-$p->addChildNode($b);
+$p->append($b);
 
-$body->addChildNode($h1);
-$body->addChildNode($p);
+$body->append($h1)->append($p);
 
 // only at this step the root ast-node $html gets converted to a string!
 echo $html;
+```
+
+The resulting html of the above example would be like this. If you want you can
+disable the pretty printing of the html output, such that no blank lines or spaces
+have to be transferred.
+
+```html
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Hello World Site
+    </title>
+  </head>
+  <body>
+    <h1>
+      Welcome stranger!
+    </h1>
+    <p style="color: red;" align="left">
+      <b>
+        Hello World with umlaute &auml;&ouml;&uuml;&amp;%
+      </b>
+    </p>
+  </body>
+</html>
 ```
