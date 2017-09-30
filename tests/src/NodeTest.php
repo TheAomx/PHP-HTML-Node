@@ -67,6 +67,39 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedAttribute->value, $got_attribute->value);
     }
     
+    private function generateDeeplyNestedOutput($depth) {
+        $output = "<p>";
+
+        for ($i = 0; $i < $depth; $i++) {
+            $output .= "<b>";
+        }
+
+        $output .= "test";
+
+        for ($i = 0; $i < $depth; $i++) {
+            $output .= "</b>";
+        }
+
+        $output .= "</p>";
+        return $output;
+    }
+
+    public function test_deeply_recursive_nodes () {
+        $recursionDepth = 5000;
+        $rootNode = new HtmlNode("p");
+        
+        $parentNode = $rootNode;
+        for ($i = 0; $i < $recursionDepth; $i++) {
+            $b = new HtmlNode("b");
+            $parentNode->append($b);
+            $parentNode = $b;
+        }
+        $parentNode->append(new TextNode("test"));
+        
+        $this->assertEquals($this->generateDeeplyNestedOutput($recursionDepth),
+                            $rootNode->getHtml());
+    }
+    
     /**
      * @expectedException \RuntimeException
      */
