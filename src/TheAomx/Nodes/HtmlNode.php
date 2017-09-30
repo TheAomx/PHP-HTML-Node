@@ -66,11 +66,11 @@ class HtmlNode implements Node {
         return $this->attributes[$attribute];
     }
     
-    private function hasChildren() {
+    public function hasChildren() {
         return count($this->childNodes) != 0;
     }
     
-    private function getOpeningTag() {
+    public function getOpeningTag() {
         $html = "";
         $html .= "<" . $this->tag;
         
@@ -82,25 +82,63 @@ class HtmlNode implements Node {
         return $html;
     }
     
+    public function getEndTag() {
+        return "</{$this->tag}>";
+    }
+    
     public function format($identation = 0) {
         return $this->getHtml($identation);
     }
     
-    public function getHtml($identation = 0) {
-        $html = Indentation::getIndentation($identation);
-        $html .= $this->getOpeningTag();
-        $html .= Indentation::getLineBreaker();
+    private function createTagEndCallback () {
+        $self = $this;
+        return function ($identation) use ($self) {
+            return Indentation::indent($identation, $self->getEndTag());
+        };
+    }
+    
+    public function getHtml($indentationDepth = 0) {
+        $html = Indentation::indent($indentationDepth, $this->getOpeningTag());
         
         if ($this->hasChildren()) {
             foreach ($this->childNodes as $childNode) {
-                $html .= $childNode->format($identation + Indentation::getIndentationDepth());
+                $html .= $childNode->format($indentationDepth + Indentation::getIndentationDepth());
             }
 
-            $html .= Indentation::getIndentation($identation);
-            $html .= "</$this->tag>";
-            $html .= Indentation::getLineBreaker();
+            $html .= Indentation::indent($indentationDepth, $this->getEndTag());
         }
 
+        return $html;
+    }
+    
+    public function getHtmlIterative ($indentationDepth = 0) {
+        $stack = array();
+        array_push($stack, $this);
+        
+        $html = "";
+        
+        while (($node = array_pop($stack)) != null) {
+            if (is_callable($node)) {
+                $html .= $node($indentationDepth);
+                $indentationDepth -= Indentation::getIndentationDepth();
+                continue;
+            }
+            
+            if ($node instanceof HtmlNode) {
+                $html .= Indentation::indent($indentationDepth, $node->getOpeningTag());
+                if ($node->hasChildren()) {
+                    array_push($stack, $node->createTagEndCallback());
+                    $indentationDepth += Indentation::getIndentationDepth();
+                }
+                foreach (array_reverse($node->childNodes) as $childNode) {
+                    array_push($stack, $childNode);
+                }
+            } else if ($node instanceof TextNode) {
+                $html .= $node->format($indentationDepth);
+                $indentationDepth -= Indentation::getIndentationDepth();
+            }
+        }
+        
         return $html;
     }
     

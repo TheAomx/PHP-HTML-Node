@@ -26,4 +26,13 @@ class Indentation {
     public static function getLineBreaker() {
         return self::$lineBreaker;
     }
+    
+    public static function indent ($identationDepth, $content) {
+        $text = Indentation::getIndentation($identationDepth);
+        $text .= $content;
+        $text .= Indentation::getLineBreaker();
+        return $text;
+    }
 }
+
+
