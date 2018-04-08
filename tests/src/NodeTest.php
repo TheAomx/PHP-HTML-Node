@@ -44,6 +44,72 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $node->getHtml());
     }
     
+    
+    public function test_can_add_one_class_to_html_node() {
+        $node = new HtmlNode("p");
+        $node->addClass("test-class");
+        
+        $text = new TextNode("Hello World");
+        $node->addChildNode($text);
+        
+        $expected = '<p class="test-class">Hello World</p>';
+        $this->assertEquals($expected, $node->getHtml());
+    }
+    
+    public function test_can_add_multiple_classes_to_html_node() {
+        $node = new HtmlNode("p");
+        $node->addClass("test-class");
+        $node->addClass("other-class");
+        $node->addClass("another-class");
+        
+        $text = new TextNode("Hello World");
+        $node->addChildNode($text);
+        
+        $expected = '<p class="test-class other-class another-class">Hello World</p>';
+        $this->assertEquals($expected, $node->getHtml());
+        $this->assertEquals("test-class other-class another-class", 
+                            $node->getAttribute("class")->value);
+    }
+    
+    public function test_has_class_detects_added_classes() {
+        $node = new HtmlNode("p");
+        $node->addClass("test-class");
+        $node->addClass("other-class");
+        
+        $this->assertTrue($node->hasClass("test-class"));
+        $this->assertTrue($node->hasClass("other-class"));
+        $this->assertFalse($node->hasClass("not-set-class"));
+    }
+    
+    public function test_can_remove_added_classes() {
+        $node = new HtmlNode("p");
+        $node->addClass("test-class");
+        $node->addClass("other-class");
+        $node->removeClass("test-class");
+    
+        $text = new TextNode("Hello World");
+        $node->addChildNode($text);
+        
+        $expected = '<p class="other-class">Hello World</p>';
+        $this->assertFalse($node->hasClass("test-class"));
+        $this->assertEquals($expected, $node->getHtml());
+    }
+    
+    public function test_add_multiples_class_with_node_attribute() {
+        $node = new HtmlNode("p");
+        $node->addAttribute(new NodeAttribute("class", "test-class other-class  another-class"));
+        $node->removeClass("another-class");
+    
+        $text = new TextNode("Hello World");
+        $node->addChildNode($text);
+        
+        $expected = '<p class="test-class other-class">Hello World</p>';
+        $this->assertTrue($node->hasClass("test-class"));
+        $this->assertTrue($node->hasClass("other-class"));
+        $this->assertFalse($node->hasClass("another-class"));
+        $this->assertEquals($expected, $node->getHtml());
+    }
+    
     public function test_paragraph_node_with_attribute() {
         $node = new HtmlNode("p");
         $node->addAttribute(new NodeAttribute("style", "color:red;"));

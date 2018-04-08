@@ -11,6 +11,7 @@ require_once 'Indentation.php';
 class HtmlNode implements Node {
     private $tag;
     private $attributes = array();
+    private $classes = array();
     private $childNodes = array();
     
     public function __construct($tag = "") {
@@ -24,6 +25,26 @@ class HtmlNode implements Node {
         
         array_push($this->childNodes, $node);
         return $this;
+    }
+    
+    public function addClass ($class) {
+        if ($class == null || $this->hasClass($class)) {
+            return;
+        }
+        
+        array_push($this->classes, $class);
+        return $this;
+    }
+    
+    public function hasClass($class) {
+        return in_array($class, $this->classes);
+    }
+    
+    public function removeClass($class) {
+        if ($this->hasClass($class)) {
+            $key = array_search($class,$this->classes);
+            unset($this->classes[$key]);
+        }
     }
     
     public function append (Node $node) {
@@ -48,8 +69,15 @@ class HtmlNode implements Node {
         if ($attribute == null) {
             return;
         }
-
-        $this->attributes[$attribute->name] = $attribute;
+        
+        if ($attribute->name === "class") {
+            $classes = explode(" ", $attribute->value);
+            foreach ($classes as $class) {
+                $this->addClass(trim($class));
+            }
+        } else {
+            $this->attributes[$attribute->name] = $attribute;
+        }
     }
     
     /**
@@ -60,6 +88,10 @@ class HtmlNode implements Node {
      */
     
     public function getAttribute ($attribute) {
+        if ($attribute === "class") {
+            return new NodeAttribute("class", $this->getClassAttribute());
+        }
+        
         if (!key_exists($attribute, $this->attributes)) {
             throw new \RuntimeException("Attribute $attribute in node $this->tag does not exist yet!");
         }
@@ -71,9 +103,20 @@ class HtmlNode implements Node {
         return count($this->childNodes) != 0;
     }
     
+    private function getClassAttribute() {
+        $classAttribute = "";
+        foreach ($this->classes as $class) {
+            $classAttribute .= $class .  " ";
+        }
+        $classAttribute = substr($classAttribute, 0, -1);
+        return $classAttribute;
+    }
+    
     public function getOpeningTag() {
         $html = "";
         $html .= "<" . $this->tag;
+        
+        $html .= count($this->classes) == 0 ? '' : ' class="' . $this->getClassAttribute() . '"';
         
         foreach ($this->attributes as $attribute) {
             $html .= $attribute->getHtml();
