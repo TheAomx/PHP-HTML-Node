@@ -3,7 +3,6 @@
 namespace Nodes;
 
 require_once 'root.php';
-
 require_once get_src_folder() . 'HtmlBuilder.php';
 
 use \TheAomx\Nodes\HtmlNode as HtmlNode;
@@ -40,6 +39,15 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
         $expected = '<br />';
         $this->assertEquals($expected, $br->getHtml());
     }
+    
+    public function test_appended_empty_node_is_ignored() {
+        $builder = HtmlNode::get_builder("p");
+        $builder->add_node(HtmlNode::get_empty());
+        $builder->add_node(HtmlNode::get_builder("b")->s_text("Hello World")->build());
+        $p = $builder->build();
+        $expected = '<p><b>Hello World</b></p>';
+        $this->assertEquals($expected, $p->getHtml());
+    }       
     
     public function test_integration_test_with_full_site() {
         $html = HtmlNode::get_builder("html")->attr("lang", "de")->build();

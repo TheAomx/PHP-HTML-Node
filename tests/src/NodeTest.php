@@ -6,9 +6,11 @@ require_once 'root.php';
 
 require_once get_src_folder() . 'HtmlNode.php';
 require_once get_src_folder() . 'TextNode.php';
+require_once get_src_folder() . 'EmptyNode.php';
 
 use \TheAomx\Nodes\HtmlNode as HtmlNode;
 use \TheAomx\Nodes\TextNode as TextNode;
+use \TheAomx\Nodes\EmptyNode as EmptyNode;
 use \TheAomx\Nodes\NodeAttribute as NodeAttribute;
 use \TheAomx\Nodes\Indentation as Indentation;
 
@@ -27,6 +29,17 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $node = new HtmlNode("p");
         $text = new TextNode("Hello World");
         $node->addChildNode($text);
+        $expected = '<p>Hello World</p>';
+        $this->assertEquals($expected, $node->getHtml());
+    }
+    
+    public function test_empty_node_evaluates_to_nothing() {
+        $node = new HtmlNode("p");
+        $text = new TextNode("Hello World");
+        $empty = new EmptyNode();
+        $node->addChildNode($text);
+        $node->addChildNode($empty);
+        
         $expected = '<p>Hello World</p>';
         $this->assertEquals($expected, $node->getHtml());
     }

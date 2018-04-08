@@ -3,6 +3,7 @@
 namespace TheAomx\Nodes;
 
 require_once 'Node.php';
+require_once 'EmptyNode.php';
 require_once 'NodeAttribute.php';
 require_once 'HtmlBuilder.php';
 require_once 'Indentation.php';
@@ -156,5 +157,9 @@ class HtmlNode implements Node {
         }
         
         return new HtmlBuilder($tag);
+    }
+    
+    public static function get_empty() {
+        return new EmptyNode();
     }
 }
