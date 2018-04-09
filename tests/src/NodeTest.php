@@ -81,6 +81,22 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($node->hasClass("not-set-class"));
     }
     
+     public function test_get_classes_returns_added_classes() {
+        $classes = array("test-class", "other-class", "another-class");
+        $node = new HtmlNode("p");
+        foreach ($classes as $class) {
+            $node->addClass($class);
+        }
+        
+        $this->assertEquals(count($classes), count($node->getClasses()));
+        
+        $i = 0;
+        foreach ($node->getClasses() as $class) {
+            $this->assertEquals($classes[$i], $class);
+            $i++;
+        }
+     }
+    
     public function test_can_remove_added_classes() {
         $node = new HtmlNode("p");
         $node->addClass("test-class");
@@ -95,7 +111,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $node->getHtml());
     }
     
-    public function test_add_multiples_class_with_node_attribute() {
+    public function test_add_multiple_classes_with_node_attribute() {
         $node = new HtmlNode("p");
         $node->addAttribute(new NodeAttribute("class", "test-class other-class  another-class"));
         $node->removeClass("another-class");
@@ -106,6 +122,23 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $expected = '<p class="test-class other-class">Hello World</p>';
         $this->assertTrue($node->hasClass("test-class"));
         $this->assertTrue($node->hasClass("other-class"));
+        $this->assertFalse($node->hasClass("another-class"));
+        $this->assertEquals($expected, $node->getHtml());
+    }
+    
+    public function test_remove_multiple_classes_with_remove_all() {
+        $node = new HtmlNode("p");
+        $node->addAttribute(new NodeAttribute("class", "test-class other-class  another-class"));
+        $node->removeAllClasses();
+        $node->addClass("a");
+        
+        $text = new TextNode("Hello World");
+        $node->addChildNode($text);
+        
+        $expected = '<p class="a">Hello World</p>';
+        $this->assertTrue($node->hasClass("a"));
+        $this->assertFalse($node->hasClass("test-class"));
+        $this->assertFalse($node->hasClass("other-class"));
         $this->assertFalse($node->hasClass("another-class"));
         $this->assertEquals($expected, $node->getHtml());
     }

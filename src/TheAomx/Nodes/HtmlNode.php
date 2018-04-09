@@ -36,8 +36,20 @@ class HtmlNode implements Node {
         return $this;
     }
     
+    public function addClasses($classes) {
+        $exploded = explode(" ", trim($classes));
+    
+        foreach ($exploded as $class) {
+            $this->addClass(trim($class));
+        }
+    }
+    
     public function hasClass($class) {
         return in_array($class, $this->classes);
+    }
+    
+    public function getClasses() {
+        return $this->classes;
     }
     
     public function removeClass($class) {
@@ -45,6 +57,13 @@ class HtmlNode implements Node {
             $key = array_search($class,$this->classes);
             unset($this->classes[$key]);
         }
+
+        return $this;
+    }
+    
+    public function removeAllClasses() {
+        $this->classes = array();
+        return $this;
     }
     
     public function append (Node $node) {
@@ -52,7 +71,8 @@ class HtmlNode implements Node {
     }
     
     public function attribute ($name, $value) {
-        $this->attributes[$name] = new NodeAttribute($name, $value);
+        $attribute = new NodeAttribute($name, $value);
+        $this->addAttribute($attribute);
         return $this;
     }
     
@@ -69,12 +89,9 @@ class HtmlNode implements Node {
         if ($attribute == null) {
             return;
         }
-        
+
         if ($attribute->name === "class") {
-            $classes = explode(" ", $attribute->value);
-            foreach ($classes as $class) {
-                $this->addClass(trim($class));
-            }
+            $this->addClasses($attribute->value);
         } else {
             $this->attributes[$attribute->name] = $attribute;
         }
@@ -108,8 +125,7 @@ class HtmlNode implements Node {
         foreach ($this->classes as $class) {
             $classAttribute .= $class .  " ";
         }
-        $classAttribute = substr($classAttribute, 0, -1);
-        return $classAttribute;
+        return substr($classAttribute, 0, -1);
     }
     
     public function getOpeningTag() {
