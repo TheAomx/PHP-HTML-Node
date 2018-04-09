@@ -27,6 +27,10 @@ class HtmlNode implements Node {
         return $this;
     }
     
+    public function append (Node $node) {
+        return $this->addChildNode($node);
+    }
+    
     public function addClass ($class) {
         if ($class == null || $this->hasClass($class)) {
             return;
@@ -64,10 +68,6 @@ class HtmlNode implements Node {
     public function removeAllClasses() {
         $this->classes = array();
         return $this;
-    }
-    
-    public function append (Node $node) {
-        return $this->addChildNode($node);
     }
     
     public function attribute ($name, $value) {

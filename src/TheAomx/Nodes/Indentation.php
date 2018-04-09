@@ -1,8 +1,6 @@
 <?php
 
-
 namespace TheAomx\Nodes;
-
 
 class Indentation {
     public static $indentationDepth = 0;

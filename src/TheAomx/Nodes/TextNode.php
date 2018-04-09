@@ -14,5 +14,4 @@ class TextNode implements Node {
     public function format($identation = 0) {
         return Indentation::indent($identation, $this->value);
     }
-
 }
