@@ -5,7 +5,7 @@ namespace TheAomx\Nodes;
 class EmptyNode implements Node {
     public function __construct() {}
     
-    public function format($identation = 0) {
+    public function format(int $indentation = 0): string {
         return "";
     }
 }

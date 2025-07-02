@@ -13,15 +13,16 @@ use \TheAomx\Nodes\TextNode as TextNode;
 use \TheAomx\Nodes\EmptyNode as EmptyNode;
 use \TheAomx\Nodes\NodeAttribute as NodeAttribute;
 use \TheAomx\Nodes\Indentation as Indentation;
+use PHPUnit\Framework\TestCase as Testcase;
 
-class NodeTest extends \PHPUnit_Framework_TestCase {
-    protected function setUp() {
+class NodeTest extends Testcase {
+    protected function setUp() : void {
         Indentation::$indentationCharacter = "";
         Indentation::$indentationDepth = 0;
         Indentation::$lineBreaker = "";
     }
 
-    protected function tearDown() {
+    protected function tearDown() : void {
         
     }
     
@@ -211,13 +212,10 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->generateDeeplyNestedOutput($recursionDepth),
                             $rootNode->getHtml());
     }
-    
-    /**
-     * @expectedException \RuntimeException
-     */
-    
+
     public function test_get_of_not_set_attribute () {
         $node = new HtmlNode("p");
+        $this->expectException(\RuntimeException::class);
         $node->getAttribute("style");
     }
 

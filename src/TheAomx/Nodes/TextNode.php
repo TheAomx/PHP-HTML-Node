@@ -7,11 +7,11 @@ require_once 'Indentation.php';
 class TextNode implements Node {
     public $value;
     
-    public function __construct($value) {
+    public function __construct(string $value) {
         $this->value = $value;
     }
 
-    public function format($identation = 0) {
-        return Indentation::indent($identation, $this->value);
+    public function format(int $indentation = 0): string {
+        return Indentation::indent($indentation, $this->value);
     }
 }

@@ -10,9 +10,10 @@ use \TheAomx\Nodes\HtmlNode as HtmlNode;
 use \TheAomx\Nodes\TextNode as TextNode;
 use \TheAomx\Nodes\NodeAttribute as NodeAttribute;
 use \TheAomx\Nodes\Indentation as Indentation;
+use PHPUnit\Framework\TestCase as Testcase;
 
-class IndentationTest  extends \PHPUnit_Framework_TestCase {
-    protected function setUp() {
+class IndentationTest  extends Testcase {
+    protected function setUp() : void {
         Indentation::$indentationCharacter = " ";
         Indentation::$indentationDepth = 1;
         Indentation::$lineBreaker = "\n";

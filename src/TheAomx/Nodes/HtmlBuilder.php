@@ -9,41 +9,41 @@ require_once 'TextNode.php';
 class HtmlBuilder {
     private $node;
     
-    public function __construct($tag) {
+    public function __construct(string $tag) {
         $this->node = new HtmlNode($tag);
     }
     
-    public function add_node (Node $node) {
+    public function add_node (Node $node): HtmlBuilder {
         $this->node->addChildNode($node);
         return $this;
     }
     
-    public function add_attribute (NodeAttribute $attribute) {
+    public function add_attribute (NodeAttribute $attribute): HtmlBuilder {
         $this->node->addAttribute($attribute);
         return $this;
     }
     
-    private function sanitizeString ($string) {
+    private function sanitizeString (string $string): string {
         return htmlentities($string, ENT_QUOTES|ENT_XHTML, 'UTF-8', true);
     }
     
-    public function attribute($name, $value) {
+    public function attribute(string $name, string $value): HtmlBuilder {
         $attribute = new NodeAttribute($name, $value);
         $this->node->addAttribute($attribute);
         return $this;
     }
     
-    public function attr($name, $value) {
+    public function attr(string $name, string $value): HtmlBuilder {
         return $this->attribute($name, $value);
     }
     
-    public function s_attribute($name, $value) {
+    public function s_attribute(string $name, string $value): HtmlBuilder {
         $attribute = new NodeAttribute($name, $this->sanitizeString($value));
         $this->node->addAttribute($attribute);
         return $this;
     }
     
-    public function s_attr($name, $value) {
+    public function s_attr(string $name, string $value): HtmlBuilder {
         return $this->s_attribute($name, $value);
     }
     
@@ -53,7 +53,7 @@ class HtmlBuilder {
      * @return \Nodes\HtmlBuilder
      */
     
-    public function text ($value) {
+    public function text (string $value): HtmlBuilder {
         $text = new TextNode($value);
         $this->node->addChildNode($text);
         return $this;
@@ -65,7 +65,7 @@ class HtmlBuilder {
      * @return \Nodes\HtmlBuilder
      */
     
-    public function s_text ($value) {
+    public function s_text (string $value): HtmlBuilder {
         $s_value = $this->sanitizeString($value);
         $text = new TextNode($s_value);
         $this->node->addChildNode($text);
@@ -77,7 +77,7 @@ class HtmlBuilder {
      * @return HtmlNode
      */
     
-    public function build () {
+    public function build (): HtmlNode {
         return $this->node;
     }
 }

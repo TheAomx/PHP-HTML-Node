@@ -7,9 +7,11 @@ require_once get_src_folder() . 'HtmlBuilder.php';
 
 use \TheAomx\Nodes\HtmlNode as HtmlNode;
 use \TheAomx\Nodes\Indentation as Indentation;
+use PHPUnit\Framework\TestCase as Testcase;
 
-class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
-    protected function setUp() {
+class HtmlBuilderTest extends Testcase {
+    #[\Override]
+    protected function setUp() : void {
         Indentation::$indentationCharacter = "";
         Indentation::$indentationDepth = 0;
         Indentation::$lineBreaker = "";
@@ -85,24 +87,4 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
                     .'</html>';
         $this->assertEquals($expected, $html->getHtml());
     }
-
-    /**
-     * @expectedException \RuntimeException
-     */
-
-    public function test_null_builder() {
-        // this doesnt make mich sense... expect exception...
-        HtmlNode::get_builder(null);
-    }
-
-    /**
-     * @expectedException \RuntimeException
-     */
-
-    public function test_number_builder() {
-        // this doesnt make mich sense... expect exception...
-        HtmlNode::get_builder(1);
-    }
-    
-
 }

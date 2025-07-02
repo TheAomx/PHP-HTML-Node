@@ -18,29 +18,29 @@ class HtmlNode implements Node {
         $this->tag = $tag;
     }
     
-    public function addChildNode (Node $node) {
+    public function addChildNode (Node $node): ?HtmlNode {
         if ($node == null) {
-            return;
+            return \null;
         }
         
         array_push($this->childNodes, $node);
         return $this;
     }
     
-    public function append (Node $node) {
+    public function append (Node $node): HtmlNode {
         return $this->addChildNode($node);
     }
     
-    public function addClass ($class) {
+    public function addClass (string $class): ?HtmlNode {
         if ($class == null || $this->hasClass($class)) {
-            return;
+            return null;
         }
         
         array_push($this->classes, $class);
         return $this;
     }
     
-    public function addClasses($classes) {
+    public function addClasses(string $classes): void {
         $exploded = explode(" ", trim($classes));
     
         foreach ($exploded as $class) {
@@ -48,15 +48,15 @@ class HtmlNode implements Node {
         }
     }
     
-    public function hasClass($class) {
+    public function hasClass(string $class): bool {
         return in_array($class, $this->classes);
     }
     
-    public function getClasses() {
+    public function getClasses(): array {
         return $this->classes;
     }
     
-    public function removeClass($class) {
+    public function removeClass(string $class): HtmlNode {
         if ($this->hasClass($class)) {
             $key = array_search($class,$this->classes);
             unset($this->classes[$key]);
@@ -65,27 +65,27 @@ class HtmlNode implements Node {
         return $this;
     }
     
-    public function removeAllClasses() {
+    public function removeAllClasses(): HtmlNode {
         $this->classes = array();
         return $this;
     }
     
-    public function attribute ($name, $value) {
+    public function attribute (string $name, string $value): HtmlNode {
         $attribute = new NodeAttribute($name, $value);
         $this->addAttribute($attribute);
         return $this;
     }
     
-    public function attr($name, $value) {
+    public function attr(string $name, string $value): HtmlNode {
         return $this->attribute($name, $value);
     }
     
-    public function child (Node $node) {
+    public function child (Node $node): HtmlNode {
         $this->addChildNode($node);
         return $this;
     }
     
-    public function addAttribute (NodeAttribute $attribute) {
+    public function addAttribute (NodeAttribute $attribute): void {
         if ($attribute == null) {
             return;
         }
@@ -104,7 +104,7 @@ class HtmlNode implements Node {
      * @throws \RuntimeException
      */
     
-    public function getAttribute ($attribute) {
+    public function getAttribute (string $attribute): NodeAttribute {
         if ($attribute === "class") {
             return new NodeAttribute("class", $this->getClassAttribute());
         }
@@ -116,11 +116,11 @@ class HtmlNode implements Node {
         return $this->attributes[$attribute];
     }
     
-    public function hasChildren() {
+    public function hasChildren(): bool {
         return count($this->childNodes) != 0;
     }
     
-    private function getClassAttribute() {
+    private function getClassAttribute(): string {
         $classAttribute = "";
         foreach ($this->classes as $class) {
             $classAttribute .= $class .  " ";
@@ -128,7 +128,7 @@ class HtmlNode implements Node {
         return substr($classAttribute, 0, -1);
     }
     
-    public function getOpeningTag() {
+    public function getOpeningTag(): string {
         $html = "";
         $html .= "<" . $this->tag;
         
@@ -142,22 +142,22 @@ class HtmlNode implements Node {
         return $html;
     }
     
-    public function getEndTag() {
+    public function getEndTag(): string {
         return "</{$this->tag}>";
     }
     
-    public function format($identation = 0) {
-        return $this->getHtml($identation);
+    public function format(int $indentation = 0): string {
+        return $this->getHtml($indentation);
     }
     
     private function createTagEndCallback () {
         $self = $this;
-        return function ($identation) use ($self) {
-            return Indentation::indent($identation, $self->getEndTag());
+        return function ($indentation) use ($self) {
+            return Indentation::indent($indentation, $self->getEndTag());
         };
     }
     
-    public function getHtml($indentationDepth = 0) {
+    public function getHtml(int $indentationDepth = 0): string {
         $html = Indentation::indent($indentationDepth, $this->getOpeningTag());
         
         if ($this->hasChildren()) {
@@ -171,7 +171,7 @@ class HtmlNode implements Node {
         return $html;
     }
     
-    public function getHtmlIterative ($indentationDepth = 0) {
+    public function getHtmlIterative (int $indentationDepth = 0): string {
         $stack = array();
         array_push($stack, $this);
         
@@ -202,15 +202,11 @@ class HtmlNode implements Node {
         return $html;
     }
     
-    public function __toString() {
+    public function __toString(): string {
         return $this->getHtml(0);
     }
     
-    public static function get_builder($tag) {
-        if ($tag == null) {
-            throw new \RuntimeException("get_builder called with null");
-        }
-        
+    public static function get_builder(string $tag) {
         if (!is_string($tag)) {
             throw new \RuntimeException("tag at get_builder must be a string");
         }
@@ -218,7 +214,7 @@ class HtmlNode implements Node {
         return new HtmlBuilder($tag);
     }
     
-    public static function get_empty() {
+    public static function get_empty(): Node {
         return new EmptyNode();
     }
 }
