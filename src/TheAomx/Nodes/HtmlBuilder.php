@@ -27,23 +27,31 @@ class HtmlBuilder {
         return htmlentities($string, ENT_QUOTES|ENT_XHTML, 'UTF-8', true);
     }
     
-    public function attribute(string $name, string $value): HtmlBuilder {
+    public function attribute(?string $name, ?string $value): HtmlBuilder {
+        if ($name === null || $value === null) {
+            return $this;
+        }
+
         $attribute = new NodeAttribute($name, $value);
         $this->node->addAttribute($attribute);
         return $this;
     }
     
-    public function attr(string $name, string $value): HtmlBuilder {
+    public function attr(?string $name, ?string $value): HtmlBuilder {
         return $this->attribute($name, $value);
     }
     
-    public function s_attribute(string $name, string $value): HtmlBuilder {
+    public function s_attribute(?string $name, ?string $value): HtmlBuilder {
+        if ($name === null || $value === null) {
+            return $this;
+        }
+
         $attribute = new NodeAttribute($name, $this->sanitizeString($value));
         $this->node->addAttribute($attribute);
         return $this;
     }
     
-    public function s_attr(string $name, string $value): HtmlBuilder {
+    public function s_attr(?string $name, ?string $value): HtmlBuilder {
         return $this->s_attribute($name, $value);
     }
     
@@ -53,7 +61,11 @@ class HtmlBuilder {
      * @return \Nodes\HtmlBuilder
      */
     
-    public function text (string $value): HtmlBuilder {
+    public function text (?string $value): HtmlBuilder {
+        if ($value === null) {
+            return $this;
+        }
+
         $text = new TextNode($value);
         $this->node->addChildNode($text);
         return $this;
@@ -65,7 +77,11 @@ class HtmlBuilder {
      * @return \Nodes\HtmlBuilder
      */
     
-    public function s_text (string $value): HtmlBuilder {
+    public function s_text (?string $value): HtmlBuilder {
+        if ($value === null) {
+            return $this;
+        }
+
         $s_value = $this->sanitizeString($value);
         $text = new TextNode($s_value);
         $this->node->addChildNode($text);
